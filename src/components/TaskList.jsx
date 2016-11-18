@@ -1,14 +1,20 @@
 import React from 'react';
+import Task from './Task';
+
+const generateTasks = collection =>
+  Object.keys(collection)
+    .map((taskID, i) => (
+      <Task
+        key={i}
+        title={collection[taskID].name}
+        desc={collection[taskID].description}
+      />
+    ));
+
 
 const TaskList = props => (
   <div className="list-group">
-    <button
-      type="button"
-      className="list-group-item"
-      title="Click to Complete"
-    >
-      <strong>{props.title}</strong>{props.desc}
-    </button>
+    {generateTasks(props.collection)}
   </div>
 );
 

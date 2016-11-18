@@ -12,5 +12,5 @@ CREATE TABLE task(
 );
 
 CREATE INDEX on task (completed) ;
-CREATE INDEX on task (task_time_start) ;
+CREATE INDEX on task (deleted) ;
 CREATE INDEX on task (date_created) ;

@@ -21,9 +21,7 @@ export default class App extends React.Component {
     super();
 
     this.state = {
-      tasks: {
-        newItems: []
-      },
+      tasks: {},
       taskName: undefined,
       taskDescription: undefined,
     };
@@ -40,13 +38,18 @@ export default class App extends React.Component {
         method: "POST",
         body: JSON.stringify(task)
       }).then( () => {
-        let addToItems = this.state.tasks.newItems;
-        addToItems.push({...task})
-        this.setState({
-          tasks: {
-            newItems: addToItems
-          }
-        })
+        fetch('http://localhost:3000/tasks', {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: "GET"
+        }).then( (r) => r.json())
+          .then((data) => {
+            this.setState({
+              tasks: data
+            })
+          })
       })
       .catch((err) => {
         console.log(`POST FETCH ERROR ${err}`);
@@ -55,10 +58,10 @@ export default class App extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    let taskName = e.target.taskName.value;
-    let taskDesc = e.target.taskDesc.value;
+    let name = e.target.taskName.value;
+    let desc = e.target.taskDesc.value;
 
-    const newTask = new Task(taskName, taskDesc);
+    const newTask = {name, taskDesc}
 
     this.addTask(newTask);
 
@@ -69,9 +72,7 @@ export default class App extends React.Component {
     .then((r) => r.json())
     .then((data) => {
       this.setState({
-        tasks: {
-          newItems: data
-        }
+        tasks: data
       })
     })
     .catch((err) => {
@@ -96,7 +97,7 @@ export default class App extends React.Component {
             <article className="col-md-4">
               <h3>Open Items</h3>
               <TaskList
-                newTasks={this.state.tasks.newTasks}
+                collection={this.state.tasks.newItems}
                />
             </article>
 

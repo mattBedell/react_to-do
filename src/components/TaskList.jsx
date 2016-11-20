@@ -1,7 +1,7 @@
 import React from 'react';
 import Task from './Task';
 
-const generateTasks = collection =>
+const generateTasks = collection => 
   Object.keys(collection)
     .map((taskID, i) => (
       <Task
